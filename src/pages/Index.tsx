@@ -74,7 +74,7 @@ export default function Index() {
 
   const handleLoadHistory = (saved: SavedReceipt) => {
     setIsDemo(false);
-    const { savedAt, subtotal, tax, total, ...rest } = saved;
+    const { savedAt: _s, subtotal: _sub, tax: _t, total: _tot, ...rest } = saved;
     setReceipt(rest);
   };
 

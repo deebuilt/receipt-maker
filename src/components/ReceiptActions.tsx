@@ -4,7 +4,7 @@ import { Download, Copy, Share2, FilePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ReceiptData } from '@/types/receipt';
-import { receiptToPlainText, encodeReceiptToHash, saveReceipt, incrementReceiptNumber, getNextReceiptNumber, formatReceiptNumber } from '@/lib/receipt-utils';
+import { receiptToPlainText, encodeReceiptToHash, saveReceipt, incrementReceiptNumber } from '@/lib/receipt-utils';
 
 interface Props {
   data: ReceiptData;
