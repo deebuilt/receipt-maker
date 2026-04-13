@@ -16,7 +16,14 @@ function receiptFilename(receiptNumber: string, ext: string) {
 }
 
 async function capturePreview(el: HTMLElement) {
-  return toPng(el, { pixelRatio: 3, backgroundColor: '#ffffff' });
+  const rect = el.getBoundingClientRect();
+  return toPng(el, {
+    pixelRatio: 3,
+    backgroundColor: '#ffffff',
+    width: rect.width,
+    height: rect.height,
+    style: { overflow: 'visible' },
+  });
 }
 
 export function ReadOnlyReceipt({ data }: Props) {
@@ -47,12 +54,15 @@ export function ReadOnlyReceipt({ data }: Props) {
 
       const pxW = img.naturalWidth;
       const pxH = img.naturalHeight;
-      const pdfW = 210;
-      const pdfH = (pxH / pxW) * pdfW;
+      const margin = 10;
+      const contentW = 210 - margin * 2;
+      const contentH = (pxH / pxW) * contentW;
+      const pageW = 210;
+      const pageH = contentH + margin * 2;
 
       const { jsPDF } = await import('jspdf');
-      const pdf = new jsPDF({ orientation: pdfH > pdfW ? 'portrait' : 'landscape', unit: 'mm', format: [pdfW, pdfH] });
-      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfW, pdfH);
+      const pdf = new jsPDF({ orientation: pageH > pageW ? 'portrait' : 'landscape', unit: 'mm', format: [pageW, pageH] });
+      pdf.addImage(dataUrl, 'PNG', margin, margin, contentW, contentH);
       pdf.save(receiptFilename(data.receiptNumber, 'pdf'));
       toast.success('PDF downloaded!');
     } catch {
