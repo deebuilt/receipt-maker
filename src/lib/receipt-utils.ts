@@ -1,4 +1,14 @@
-import { LineItem, ReceiptData, SavedReceipt, BusinessInfo } from '@/types/receipt';
+import { LineItem, PaymentMethod, ReceiptData, SavedReceipt, BusinessInfo } from '@/types/receipt';
+
+const paymentLabels: Record<PaymentMethod, string> = {
+  Cash: 'Cash', Card: 'Card', Check: 'Check', Zelle: 'Zelle',
+  CashApp: 'Cash App', PayPal: 'PayPal', Venmo: 'Venmo',
+  Square: 'Square', Stripe: 'Stripe', Other: 'Other',
+};
+
+export function paymentLabel(method: PaymentMethod): string {
+  return paymentLabels[method] ?? method;
+}
 
 export const emptyBusinessInfo: BusinessInfo = {
   businessName: '',
@@ -58,7 +68,7 @@ export function receiptToPlainText(receipt: ReceiptData): string {
   if (receipt.taxEnabled) lines.push(`Tax (${receipt.taxRate}%): ${formatCurrency(tax)}`);
   lines.push(`Total: ${formatCurrency(total)}`);
   lines.push('');
-  lines.push(`Payment: ${receipt.paymentMethod}`);
+  lines.push(`Payment: ${paymentLabel(receipt.paymentMethod)}`);
   if (receipt.notes) lines.push(`Notes: ${receipt.notes}`);
   lines.push('');
   lines.push('Generated with Receipt Maker');

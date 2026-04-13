@@ -12,7 +12,18 @@ import { cn } from '@/lib/utils';
 import { LineItem, PaymentMethod, ReceiptData } from '@/types/receipt';
 import { createEmptyLineItem } from '@/lib/receipt-utils';
 
-const paymentMethods: PaymentMethod[] = ['Cash', 'Check', 'Venmo', 'Zelle', 'Card', 'Other'];
+const paymentMethods: { value: PaymentMethod; label: string }[] = [
+  { value: 'Cash', label: 'Cash' },
+  { value: 'Card', label: 'Card' },
+  { value: 'Check', label: 'Check' },
+  { value: 'Zelle', label: 'Zelle' },
+  { value: 'CashApp', label: 'Cash App' },
+  { value: 'PayPal', label: 'PayPal' },
+  { value: 'Venmo', label: 'Venmo' },
+  { value: 'Square', label: 'Square' },
+  { value: 'Stripe', label: 'Stripe' },
+  { value: 'Other', label: 'Other' },
+];
 
 interface Props {
   data: ReceiptData;
@@ -57,7 +68,7 @@ export function ReceiptForm({ data, onChange }: Props) {
         </div>
         <div className="w-28">
           <Label>Receipt #</Label>
-          <Input value={data.receiptNumber} readOnly className="h-11 mt-1 bg-muted font-mono" />
+          <Input value={data.receiptNumber} onChange={e => update({ receiptNumber: e.target.value })} className="h-11 mt-1 font-mono" />
         </div>
       </div>
 
@@ -109,7 +120,7 @@ export function ReceiptForm({ data, onChange }: Props) {
         <Select value={data.paymentMethod} onValueChange={v => update({ paymentMethod: v as PaymentMethod })}>
           <SelectTrigger className="h-11 mt-1"><SelectValue /></SelectTrigger>
           <SelectContent>
-            {paymentMethods.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+            {paymentMethods.map(m => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}
           </SelectContent>
         </Select>
       </div>

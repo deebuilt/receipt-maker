@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { ReceiptData } from '@/types/receipt';
-import { calcSubtotal, calcTax, formatCurrency } from '@/lib/receipt-utils';
+import { calcSubtotal, calcTax, formatCurrency, paymentLabel } from '@/lib/receipt-utils';
 
 interface Props {
   data: ReceiptData;
@@ -82,7 +82,7 @@ export const ReceiptPreview = forwardRef<HTMLDivElement, Props>(({ data }, ref) 
       {/* Payment & Notes */}
       <div className="mt-4 flex items-center gap-2">
         <span className="text-xs text-gray-500">Paid via</span>
-        <Badge variant="secondary" className="text-xs">{data.paymentMethod}</Badge>
+        <Badge variant="secondary" className="text-xs">{paymentLabel(data.paymentMethod)}</Badge>
       </div>
 
       {data.notes && (

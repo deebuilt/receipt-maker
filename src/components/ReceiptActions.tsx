@@ -46,7 +46,7 @@ export function ReceiptActions({ data, previewRef, onNewReceipt }: Props) {
   const handleShare = async () => {
     saveReceipt(data);
     const hash = encodeReceiptToHash(data);
-    const url = `${window.location.origin}${window.location.pathname}#/receipt/${hash}`;
+    const url = `${window.location.origin}${window.location.pathname}?shared=${hash}`;
     try {
       await navigator.clipboard.writeText(url);
       toast.success('Share link copied!');
@@ -64,18 +64,18 @@ export function ReceiptActions({ data, previewRef, onNewReceipt }: Props) {
   };
 
   return (
-    <div className="sticky bottom-0 bg-background/95 backdrop-blur border-t p-3 flex gap-2 justify-center z-10">
-      <Button onClick={handleDownload} className="h-12 flex-1 max-w-[160px]" size="sm">
-        <Download className="h-4 w-4 mr-1.5" /> Download
+    <div className="sticky bottom-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-t shadow-[0_-1px_3px_rgba(0,0,0,0.06)] p-3 flex gap-3 justify-center z-10">
+      <Button onClick={handleDownload} size="icon" className="h-11 w-11 rounded-full">
+        <Download className="h-5 w-5" />
       </Button>
-      <Button onClick={handleCopy} variant="outline" className="h-12 flex-1 max-w-[120px]" size="sm">
-        <Copy className="h-4 w-4 mr-1.5" /> Copy
+      <Button onClick={handleCopy} variant="outline" size="icon" className="h-11 w-11 rounded-full">
+        <Copy className="h-5 w-5" />
       </Button>
-      <Button onClick={handleShare} variant="outline" className="h-12 flex-1 max-w-[120px]" size="sm">
-        <Share2 className="h-4 w-4 mr-1.5" /> Share
+      <Button onClick={handleShare} variant="outline" size="icon" className="h-11 w-11 rounded-full">
+        <Share2 className="h-5 w-5" />
       </Button>
-      <Button onClick={handleNew} variant="secondary" className="h-12 px-4" size="sm">
-        <FilePlus className="h-4 w-4" />
+      <Button onClick={handleNew} variant="secondary" size="icon" className="h-11 w-11 rounded-full">
+        <FilePlus className="h-5 w-5" />
       </Button>
     </div>
   );

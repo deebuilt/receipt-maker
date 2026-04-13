@@ -13,7 +13,7 @@ export interface LineItem {
   unitPrice: number;
 }
 
-export type PaymentMethod = 'Cash' | 'Check' | 'Venmo' | 'Zelle' | 'Card' | 'Other';
+export type PaymentMethod = 'Cash' | 'Card' | 'Check' | 'Zelle' | 'CashApp' | 'PayPal' | 'Venmo' | 'Square' | 'Stripe' | 'Other';
 
 export interface ReceiptData {
   receiptNumber: string;
