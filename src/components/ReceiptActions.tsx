@@ -1,10 +1,11 @@
 import { useRef } from 'react';
 import { toPng } from 'html-to-image';
-import { Download, Copy, Share2, FilePlus } from 'lucide-react';
+// jspdf is loaded lazily to keep initial bundle small
+import { Download, Copy, FileText, FilePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ReceiptData } from '@/types/receipt';
-import { receiptToPlainText, encodeReceiptToHash, saveReceipt, incrementReceiptNumber } from '@/lib/receipt-utils';
+import { receiptToPlainText, saveReceipt, incrementReceiptNumber } from '@/lib/receipt-utils';
 
 interface Props {
   data: ReceiptData;
@@ -12,24 +13,60 @@ interface Props {
   onNewReceipt: () => void;
 }
 
-export function ReceiptActions({ data, previewRef, onNewReceipt }: Props) {
-  const downloading = useRef(false);
+function receiptFilename(receiptNumber: string, ext: string) {
+  return `receipt-${receiptNumber.replace('#', '')}.${ext}`;
+}
 
-  const handleDownload = async () => {
-    if (!previewRef.current || downloading.current) return;
-    downloading.current = true;
+async function capturePreview(el: HTMLElement) {
+  return toPng(el, { pixelRatio: 3, backgroundColor: '#ffffff' });
+}
+
+export function ReceiptActions({ data, previewRef, onNewReceipt }: Props) {
+  const busy = useRef(false);
+
+  const handleDownloadPng = async () => {
+    if (!previewRef.current || busy.current) return;
+    busy.current = true;
     try {
       saveReceipt(data);
-      const dataUrl = await toPng(previewRef.current, { pixelRatio: 3, backgroundColor: '#ffffff' });
+      const dataUrl = await capturePreview(previewRef.current);
       const link = document.createElement('a');
-      link.download = `receipt-${data.receiptNumber.replace('#', '')}.png`;
+      link.download = receiptFilename(data.receiptNumber, 'png');
       link.href = dataUrl;
       link.click();
-      toast.success('Receipt downloaded!');
+      toast.success('PNG downloaded!');
     } catch {
-      toast.error('Failed to download receipt');
+      toast.error('Failed to download PNG');
     } finally {
-      downloading.current = false;
+      busy.current = false;
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!previewRef.current || busy.current) return;
+    busy.current = true;
+    try {
+      saveReceipt(data);
+      const dataUrl = await capturePreview(previewRef.current);
+
+      const img = new Image();
+      img.src = dataUrl;
+      await new Promise<void>((res, rej) => { img.onload = () => res(); img.onerror = rej; });
+
+      const pxW = img.naturalWidth;
+      const pxH = img.naturalHeight;
+      const pdfW = 210; // A4 width in mm
+      const pdfH = (pxH / pxW) * pdfW;
+
+      const { jsPDF } = await import('jspdf');
+      const pdf = new jsPDF({ orientation: pdfH > pdfW ? 'portrait' : 'landscape', unit: 'mm', format: [pdfW, pdfH] });
+      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfW, pdfH);
+      pdf.save(receiptFilename(data.receiptNumber, 'pdf'));
+      toast.success('PDF downloaded!');
+    } catch {
+      toast.error('Failed to download PDF');
+    } finally {
+      busy.current = false;
     }
   };
 
@@ -37,21 +74,9 @@ export function ReceiptActions({ data, previewRef, onNewReceipt }: Props) {
     try {
       saveReceipt(data);
       await navigator.clipboard.writeText(receiptToPlainText(data));
-      toast.success('Receipt copied to clipboard!');
+      toast.success('Copied to clipboard!');
     } catch {
       toast.error('Failed to copy');
-    }
-  };
-
-  const handleShare = async () => {
-    saveReceipt(data);
-    const hash = encodeReceiptToHash(data);
-    const url = `${window.location.origin}${window.location.pathname}?shared=${hash}`;
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success('Share link copied!');
-    } catch {
-      toast.error('Failed to copy link');
     }
   };
 
@@ -65,14 +90,14 @@ export function ReceiptActions({ data, previewRef, onNewReceipt }: Props) {
 
   return (
     <div className="sticky bottom-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-t shadow-[0_-1px_3px_rgba(0,0,0,0.06)] p-3 flex gap-3 justify-center z-10">
-      <Button onClick={handleDownload} size="icon" className="h-11 w-11 rounded-full">
+      <Button onClick={handleDownloadPng} size="icon" className="h-11 w-11 rounded-full">
         <Download className="h-5 w-5" />
+      </Button>
+      <Button onClick={handleDownloadPdf} variant="outline" size="icon" className="h-11 w-11 rounded-full">
+        <FileText className="h-5 w-5" />
       </Button>
       <Button onClick={handleCopy} variant="outline" size="icon" className="h-11 w-11 rounded-full">
         <Copy className="h-5 w-5" />
-      </Button>
-      <Button onClick={handleShare} variant="outline" size="icon" className="h-11 w-11 rounded-full">
-        <Share2 className="h-5 w-5" />
       </Button>
       <Button onClick={handleNew} variant="secondary" size="icon" className="h-11 w-11 rounded-full">
         <FilePlus className="h-5 w-5" />
