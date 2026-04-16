@@ -77,6 +77,13 @@ export default function About() {
         <p className="text-xs text-center text-muted-foreground pt-2">
           All data stays on your device — nothing is sent to any server.
         </p>
+
+        <p className="text-xs text-center text-muted-foreground/70">
+          A business tool from Opsette Marketplace. Find more tools at{' '}
+          <a href="https://opsette.io" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground transition-colors">
+            opsette.io
+          </a>.
+        </p>
       </div>
     </div>
   );

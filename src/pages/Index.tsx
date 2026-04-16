@@ -173,6 +173,13 @@ export default function Index() {
           <button onClick={() => navigate('/privacy')} className="hover:text-foreground transition-colors">
             Privacy
           </button>
+          <span>·</span>
+          <span>
+            By{' '}
+            <a href="https://opsette.io" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground transition-colors">
+              Opsette
+            </a>
+          </span>
         </div>
       </main>
 
