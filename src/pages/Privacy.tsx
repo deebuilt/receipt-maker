@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { OpsetteFooterLogo } from '@/components/opsette-share';
 
 export default function Privacy() {
   const navigate = useNavigate();
@@ -54,6 +55,8 @@ export default function Privacy() {
             If you have questions about this policy, you can reach us through the app's repository.
           </p>
         </div>
+
+        <OpsetteFooterLogo />
       </div>
     </div>
   );

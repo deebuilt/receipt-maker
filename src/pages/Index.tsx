@@ -10,6 +10,7 @@ import { SettingsSheet } from '@/components/SettingsSheet';
 import { HistorySheet } from '@/components/HistorySheet';
 import { ReadOnlyReceipt } from '@/components/ReadOnlyReceipt';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { ShareAppButton } from '@/components/opsette-share';
 import { BusinessInfo, ReceiptData, SavedReceipt } from '@/types/receipt';
 import {
   emptyBusinessInfo,
@@ -123,6 +124,7 @@ export default function Index() {
             <h1 className="text-base font-semibold text-foreground">Receipt Maker</h1>
           </div>
           <div className="flex items-center gap-1">
+            <ShareAppButton size={36} />
             <Button
               variant="ghost"
               size="icon"
