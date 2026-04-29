@@ -10,7 +10,7 @@ import { SettingsSheet } from '@/components/SettingsSheet';
 import { HistorySheet } from '@/components/HistorySheet';
 import { ReadOnlyReceipt } from '@/components/ReadOnlyReceipt';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { ShareAppButton } from '@/components/opsette-share';
+import { OpsetteHeader } from '@/components/opsette-header';
 import { BusinessInfo, ReceiptData, SavedReceipt } from '@/types/receipt';
 import {
   emptyBusinessInfo,
@@ -24,21 +24,6 @@ import {
 
 const FORM_SHADOW = '0 4px 12px -2px rgba(0,0,0,0.12), 0 2px 4px -2px rgba(0,0,0,0.06)';
 const CARD_SHADOW = '0 2px 6px -1px rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.04)';
-
-function AppLogo({ className }: { className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={className}>
-      <rect width="512" height="512" rx="96" fill="#2563eb"/>
-      <path d="M152 72h208a24 24 0 0 1 24 24v320l-24 16-24-16-24 16-24-16-24 16-24-16-24 16-24-16-24 16-24-16-24 16V96a24 24 0 0 1 24-24z" fill="#fff" opacity=".95"/>
-      <rect x="192" y="144" width="144" height="14" rx="7" fill="#2563eb" opacity=".2"/>
-      <rect x="192" y="182" width="112" height="14" rx="7" fill="#2563eb" opacity=".2"/>
-      <rect x="192" y="220" width="128" height="14" rx="7" fill="#2563eb" opacity=".2"/>
-      <rect x="192" y="280" width="160" height="4" rx="2" fill="#2563eb" opacity=".15"/>
-      <rect x="192" y="304" width="96" height="16" rx="8" fill="#2563eb" opacity=".3"/>
-      <rect x="304" y="304" width="48" height="16" rx="8" fill="#2563eb" opacity=".3"/>
-    </svg>
-  );
-}
 
 function createEmptyReceipt(businessInfo: BusinessInfo): ReceiptData {
   return {
@@ -115,34 +100,33 @@ export default function Index() {
     return <ReadOnlyReceipt data={sharedReceipt} />;
   }
 
+  const headerExtras = (
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-9 w-9"
+        onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+        aria-label="Toggle dark mode"
+      >
+        {resolvedTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      </Button>
+      {!isDemo && (
+        <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleTryDemo} aria-label="Try demo">
+          <Sparkles className="h-4 w-4" />
+        </Button>
+      )}
+      <HistorySheet onLoad={handleLoadHistory} />
+      <SettingsSheet businessInfo={businessInfo} onSave={handleSaveSettings} open={showSettings} onOpenChange={setShowSettings} />
+    </>
+  );
+
   return (
     <div className="min-h-[100dvh] bg-background">
-      <header className="sticky top-0 z-10 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 shadow-sm">
-        <div className="mx-auto flex h-12 max-w-lg items-center justify-between px-4">
-          <div className="flex items-center gap-2.5">
-            <AppLogo className="h-7 w-7 rounded-md" />
-            <h1 className="text-base font-semibold text-foreground">Receipt Maker</h1>
-          </div>
-          <div className="flex items-center gap-1">
-            <ShareAppButton size={36} />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9"
-              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-            >
-              {resolvedTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-            {!isDemo && (
-              <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleTryDemo}>
-                <Sparkles className="h-4 w-4" />
-              </Button>
-            )}
-            <HistorySheet onLoad={handleLoadHistory} />
-            <SettingsSheet businessInfo={businessInfo} onSave={handleSaveSettings} open={showSettings} onOpenChange={setShowSettings} />
-          </div>
-        </div>
-      </header>
+      <OpsetteHeader
+        theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
+        rightExtra={headerExtras}
+      />
 
       <main className="mx-auto max-w-lg space-y-3 px-4 py-4 pb-24">
         {isDemo && (
