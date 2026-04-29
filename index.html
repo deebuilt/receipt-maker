@@ -3,22 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Receipt Maker — Quick Receipts for Service Pros</title>
-    <meta name="description" content="Generate professional receipts on the spot. Free, mobile-first receipt generator for cleaners, handymen, and service pros." />
-    <meta name="author" content="Receipt Maker" />
-    <meta name="theme-color" content="#2563eb" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <!-- Primary -->
+    <title>Receipt Maker — Opsette</title>
+    <meta name="description" content="Generate clean, printable receipts." />
+    <meta name="author" content="Opsette" />
+    <meta name="theme-color" content="#2f4f46" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Receipt Maker" />
 
-    <meta property="og:title" content="Receipt Maker — Quick Receipts for Service Pros" />
-    <meta property="og:description" content="Generate professional receipts on the spot. Free, mobile-first receipt generator for cleaners, handymen, and service pros." />
+    <!-- Open Graph / share previews -->
+    <meta property="og:site_name" content="Opsette Tools" />
+    <meta property="og:title" content="Receipt Maker — Opsette" />
+    <meta property="og:description" content="Generate clean, printable receipts." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tools.opsette.io/receipt-maker/" />
+    <meta property="og:image" content="https://tools.opsette.io/receipt-maker/og-image.png" />
 
-    <meta name="twitter:card" content="summary" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Receipt Maker — Opsette" />
+    <meta name="twitter:description" content="Generate clean, printable receipts." />
+    <meta name="twitter:image" content="https://tools.opsette.io/receipt-maker/og-image.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

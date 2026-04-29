@@ -16,33 +16,12 @@ export default defineConfig(({ command }) => ({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "icon-192.png", "icon-512.png"],
       devOptions: {
         enabled: false,
       },
-      manifest: {
-        name: "Receipt Maker",
-        short_name: "Receipts",
-        description: "Generate professional receipts on the spot",
-        start_url: ".",
-        display: "standalone",
-        orientation: "portrait",
-        background_color: "#f8f6f2",
-        theme_color: "#2563eb",
-        icons: [
-          {
-            src: "icon-192.png",
-            sizes: "192x192",
-            type: "image/png",
-            purpose: "any maskable",
-          },
-          {
-            src: "icon-512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable",
-          },
-        ],
+      manifest: false,
+      workbox: {
+        navigateFallback: "index.html",
       },
     }),
   ].filter(Boolean),
