@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+﻿import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { VitePWA } from "vite-plugin-pwa";
@@ -7,7 +7,7 @@ export default defineConfig(({ command }) => ({
   base: command === "build" ? "/receipt-maker/" : "/",
   server: {
     host: "::",
-    port: 8080,
+    port: 8110,
     hmr: {
       overlay: false,
     },
